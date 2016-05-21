@@ -45,10 +45,10 @@ public class DynamicTimeWarping {
                 jj = j + 1;
                 cost = euclidianDistance(s.get(i),t.get(j));
                 matrixDTW[ii][jj] = cost + minimum(matrixDTW[ii-1][jj],matrixDTW[ii][jj-1],matrixDTW[ii-1][jj-1]);
-                System.out.print(matrixDTW[ii][jj]+" ");
+                //System.out.print(matrixDTW[ii][jj]+" ");
                 //System.out.println(cost+" "+matrixDTW[ii-1][jj]+" "+matrixDTW[ii][jj-1]+" "+matrixDTW[ii-1][jj-1]);
             }
-            System.out.println("");
+            //System.out.println("");
         }
 
         return matrixDTW[sSize][tSize];
