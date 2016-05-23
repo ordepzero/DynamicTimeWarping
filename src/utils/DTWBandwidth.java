@@ -12,8 +12,7 @@ import java.util.List;
  *
  * @author PeDeNRiQue
  */
-public class DynamicTimeWarping {
-    
+public class DTWBandwidth {
     public static Double DTWDistance(List<Double> s, List<Double> t,int r) {
         int sSize = s.size();
         int tSize = t.size();
@@ -69,14 +68,6 @@ public class DynamicTimeWarping {
     private static Double distance(Double pointOne,Double pointTwo){
         Double distance = 0.;
         distance = Math.pow(pointOne - pointTwo,2);
-        return distance;
-    }
-    
-    private static Double euclidianDistance(Double pointOne,Double pointTwo){
-        Double distance = 0.;
-        
-        distance = Math.sqrt(Math.pow(pointOne - pointTwo,2));
-        
         return distance;
     }
 }

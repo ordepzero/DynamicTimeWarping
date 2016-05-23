@@ -57,7 +57,7 @@ public class KNearestNeighbors {
     private List<List<Double>> calculateDistances(List<List<Double>> train,List<List<Double>> testes){
     
         for(List<Double> teste : testes){
-            teste.add(findKNearestNeighbors(train.subList(1, train.size()),teste.subList(1, teste.size())));
+            teste.add(findKNearestNeighbors(train,teste));
         }
         
         return testes;
@@ -74,21 +74,23 @@ public class KNearestNeighbors {
         neighbor = new ArrayList<Double>();
         neighbor.add(distance);
        
+//        System.out.println("INICIO");
+//        for(Double d : compared){
+//            System.out.print(d+" ");
+//        }
         
         for(List<Double> r : references){
             
             //System.out.println("REFERENCIAS: "+r.get(0)+" <_> ");
             //temp = euclideanDistance(r,compared,parPresente);
-            temp = DynamicTimeWarping.DTWDistance(r.subList(1, r.size()),compared.subList(1, compared.size()));
+            temp = DynamicTimeWarping.DTWDistance(r.subList(1, r.size()),compared.subList(1, compared.size()),30);
            
             if(temp < neighbor.get(0)){
                 neighbor = new ArrayList<Double>();
                 neighbor.add(temp);//distance
                 neighbor.add(r.get(0));//target
             }
-                
-        }
-        
+        }        
         
         distance = neighbor.get(0);
         target = neighbor.get(1);
@@ -100,14 +102,11 @@ public class KNearestNeighbors {
         //FileUtil.writeFile(compared.get(0)+"\t"+target,this.FILENAME);
         
         total++;
-        if(Objects.equals(compared.get(0), target)){
+        if(Objects.equals(compared.get(0), target)){            
             acurate++;
         }
         return target;
     }
-
-    
-    
     
     private void showMatriz(List<List<String>> matriz){
         for(List<String> ss : matriz){

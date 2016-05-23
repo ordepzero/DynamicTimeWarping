@@ -30,7 +30,7 @@ public class DynamicTimeWarpingApplication {
         List<Double> m1 = Arrays.asList(1., 1., 2., 3., 2., 0.);
         List<Double> m2 = Arrays.asList(0., 1., 1., 2., 3., 2., 1.);
         
-        System.out.println(DynamicTimeWarping.DTWDistance(m1,m2));
+        //System.out.println(DynamicTimeWarping.DTWDistance(m1,m2));
         
     }
     
