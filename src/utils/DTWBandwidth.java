@@ -16,40 +16,27 @@ public class DTWBandwidth {
     public static Double DTWDistance(List<Double> s, List<Double> t,int r) {
         int sSize = s.size();
         int tSize = t.size();
-        
-        Double[][] matrixDTW = new Double[sSize+1][tSize+1];
+        double custo=0;
 
-        for(int i = 0; i <= sSize;i++){
-            matrixDTW[i][0] = Double.MAX_VALUE;
-        }
-        for(int i = 0; i <= tSize;i++){
-            matrixDTW[0][i] = Double.MAX_VALUE;
-        }
-        matrixDTW[0][0] = 0.0;
-            
-//        for(int i = 0; i < sSize; i++){
-//            for(int j = 0; j < tSize; j++){
-//                System.out.print(matrixDTW[i][j]+" ");
-//            }
-//            System.out.println("");
-//        }
-//        System.out.println("");
+        Double[][] matrixDTW = new Double[sSize][tSize];  
         
-        Double cost;
-        int ii,jj;
-        for(int i = 0; i < sSize; i++){
-            for(int j = 0; j < tSize; j++){
-                ii = i + 1;
-                jj = j + 1;
-                cost = distance(s.get(i),t.get(j));
-                matrixDTW[ii][jj] = cost + minimum(matrixDTW[ii-1][jj],matrixDTW[ii][jj-1],matrixDTW[ii-1][jj-1]);
-                //System.out.print(matrixDTW[ii][jj]+" ");
-                //System.out.println(cost+" "+matrixDTW[ii-1][jj]+" "+matrixDTW[ii][jj-1]+" "+matrixDTW[ii-1][jj-1]);
+        r = (sSize*r/100);
+
+        for(int i=0;i<sSize;i++){
+            for(int j=0;j<tSize;j++){
+                matrixDTW[i][j] = Double.MAX_VALUE;
             }
-            //System.out.println("");
+        }
+        matrixDTW[0][0] = 0.;
+
+        for (int i= 1; i<sSize;i++){
+                for (int j= Math.max(1, i-r); j<Math.min(tSize, i+r);j++){
+                    custo = distance(s.get(i), t.get(j));
+                    matrixDTW[i][j] = custo + Math.min(matrixDTW[i-1][j], Math.min(matrixDTW[i][j-1], matrixDTW[i-1][j-1]));
+                }
         }
 
-        return matrixDTW[sSize][tSize];
+        return matrixDTW[sSize-1][tSize-1];
     }
     
     private static Double minimum(Double value1,Double value2,Double value3){

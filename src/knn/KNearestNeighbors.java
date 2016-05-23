@@ -9,6 +9,7 @@ package knn;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import utils.DTWBandwidth;
 import utils.DynamicTimeWarping;
 import utils.FileUtil;
 
@@ -83,8 +84,9 @@ public class KNearestNeighbors {
             
             //System.out.println("REFERENCIAS: "+r.get(0)+" <_> ");
             //temp = euclideanDistance(r,compared,parPresente);
-            temp = DynamicTimeWarping.DTWDistance(r.subList(1, r.size()),compared.subList(1, compared.size()),30);
-           
+            //temp = DynamicTimeWarping.DTWDistance(r.subList(1, r.size()),compared.subList(1, compared.size()),30);
+            temp = DTWBandwidth.DTWDistance(r.subList(1, r.size()),compared.subList(1, compared.size()),100);//1%;5%;10%;20%;50%;100%
+            
             if(temp < neighbor.get(0)){
                 neighbor = new ArrayList<Double>();
                 neighbor.add(temp);//distance
