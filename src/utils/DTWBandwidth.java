@@ -16,23 +16,24 @@ public class DTWBandwidth {
     public static Double DTWDistance(List<Double> s, List<Double> t,int r) {
         int sSize = s.size();
         int tSize = t.size();
-        double custo=0;
+        
 
         Double[][] matrixDTW = new Double[sSize][tSize];  
         
         r = (sSize*r/100);
-
+        r = Math.max(r, Math.abs(sSize-tSize));
+        
         for(int i=0;i<sSize;i++){
             for(int j=0;j<tSize;j++){
                 matrixDTW[i][j] = Double.MAX_VALUE;
             }
         }
         matrixDTW[0][0] = 0.;
-
+        Double cost;
         for (int i= 1; i<sSize;i++){
                 for (int j= Math.max(1, i-r); j<Math.min(tSize, i+r);j++){
-                    custo = distance(s.get(i), t.get(j));
-                    matrixDTW[i][j] = custo + Math.min(matrixDTW[i-1][j], Math.min(matrixDTW[i][j-1], matrixDTW[i-1][j-1]));
+                    cost = distance(s.get(i), t.get(j));
+                    matrixDTW[i][j] = cost + Math.min(matrixDTW[i-1][j], Math.min(matrixDTW[i][j-1], matrixDTW[i-1][j-1]));
                 }
         }
 

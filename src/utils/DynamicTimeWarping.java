@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class DynamicTimeWarping {
     
-    public static Double DTWDistance(List<Double> s, List<Double> t,int r) {
+    public static Double DTWDistance(List<Double> s, List<Double> t) {
         int sSize = s.size();
         int tSize = t.size();
         
