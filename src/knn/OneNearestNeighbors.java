@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 public class OneNearestNeighbors {
     public static void main(String[] args){
-//        KNearestNeighbors knn = new KNearestNeighbors();
+        //KNearestNeighbors knn = new KNearestNeighbors();
         KNearestNeighbors3D knn = new KNearestNeighbors3D();
         knn.SakoeChiba = false;
         knn.bandwidth = 100;
@@ -101,7 +101,7 @@ public class OneNearestNeighbors {
     
     public static class KNearestNeighbors3D{
         private Integer acuracy = 0;
-        private Integer total = 0;
+        private Double total = 0.;
         private Boolean SakoeChiba = false;
         private Integer bandwidth = 100;
         
@@ -125,8 +125,8 @@ public class OneNearestNeighbors {
         }
         
         private List<List<Double>> calculateDistances(List<List<Double>> train,List<List<Double>> testes){
-            List<Double> results = new ArrayList<Double>();
-
+             List<Double> results = new ArrayList<Double>();
+        
             for(int i = 0; i < testes.size();i = i + 3){
                 results.add(findKNearestNeighbors(train,testes.subList(i, i+3)));
             }
@@ -136,7 +136,7 @@ public class OneNearestNeighbors {
 
         private Double findKNearestNeighbors(List<List<Double>> references,List<List<Double>> compareds){
             Double distance = Double.POSITIVE_INFINITY;
-            Double temp;
+            Double tempDTW;
             Double target = null;      
             int j;
             List<Double> neighbor;
@@ -144,28 +144,23 @@ public class OneNearestNeighbors {
 
             neighbor = new ArrayList<Double>();
             neighbor.add(distance);
-            
+
             for(int i = 0; i < references.size(); i = i + 3){
                 if(SakoeChiba){
-                    temp = DynamicTimeWarping.DTWDistance(references.get(i).subList(1, references.get(i).size()),compareds.get(0).subList(1, compareds.get(0).size()),bandwidth);
-                    temp = temp + DynamicTimeWarping.DTWDistance(references.get(i+1).subList(1, references.get(i+1).size()),compareds.get(1).subList(1, compareds.get(1).size()),bandwidth);
-                    temp = temp + DynamicTimeWarping.DTWDistance(references.get(i+2).subList(1, references.get(i+2).size()),compareds.get(2).subList(1, compareds.get(2).size()),bandwidth);
+                    tempDTW = DynamicTimeWarping.DTWDistance(references.get(i).subList(1, references.get(i).size()),compareds.get(0).subList(1, compareds.get(0).size()),bandwidth);
+                    tempDTW = tempDTW + DynamicTimeWarping.DTWDistance(references.get(i+1).subList(1, references.get(i+1).size()),compareds.get(1).subList(1, compareds.get(1).size()),bandwidth);
+                    tempDTW = tempDTW + DynamicTimeWarping.DTWDistance(references.get(i+2).subList(1, references.get(i+2).size()),compareds.get(2).subList(1, compareds.get(2).size()),bandwidth);
                 }else{
-                    temp = DynamicTimeWarping.DTWDistance(references.get(i).subList(1, references.get(i).size()),compareds.get(0).subList(1, compareds.get(0).size()));
-                    temp = temp + DynamicTimeWarping.DTWDistance(references.get(i+1).subList(1, references.get(i+1).size()),compareds.get(1).subList(1, compareds.get(1).size()));
-                    temp = temp + DynamicTimeWarping.DTWDistance(references.get(i+2).subList(1, references.get(i+2).size()),compareds.get(2).subList(1, compareds.get(2).size()));
-                }                    
-
-                if(temp < neighbor.get(0)){
-                    neighbor = new ArrayList<Double>();
-                    neighbor.add(temp);//distance
-                    neighbor.add(references.get(i).get(0));//target
+                    tempDTW = DynamicTimeWarping.DTWDistance(references.get(i).subList(1, references.get(i).size()),compareds.get(0).subList(1, compareds.get(0).size()));
+                    tempDTW = tempDTW + DynamicTimeWarping.DTWDistance(references.get(i+1).subList(1, references.get(i+1).size()),compareds.get(1).subList(1, compareds.get(1).size()));
+                    tempDTW = tempDTW + DynamicTimeWarping.DTWDistance(references.get(i+2).subList(1, references.get(i+2).size()),compareds.get(2).subList(1, compareds.get(2).size()));
+                }
+                    
+                if(tempDTW < distance){
+                    distance = tempDTW;
+                    target = references.get(i).get(0);//target
                 }
             }        
-
-            distance = neighbor.get(0);
-            target = neighbor.get(1);
-
 
             total++;
             if(Objects.equals(compareds.get(0).get(0), target)){            
@@ -220,8 +215,9 @@ public class OneNearestNeighbors {
             }
             matrixDTW[0][0] = 0.;
             Double cost;
-            for (int i= 1; i<sSize;i++){
-                    for (int j= Math.max(1, i-r); j<Math.min(tSize, i+r);j++){
+            int i,j;
+            for ( i= 1; i<sSize;i++){
+                    for ( j= Math.max(1, i-r); j<Math.min(tSize, i+r);j++){
                         cost = distance(s.get(i), t.get(j));
                         matrixDTW[i][j] = cost + Math.min(matrixDTW[i-1][j], Math.min(matrixDTW[i][j-1], matrixDTW[i-1][j-1]));
                     }
